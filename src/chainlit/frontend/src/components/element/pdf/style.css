@@ -1,0 +1,60 @@
+.pdf-element {
+    display: flex;
+    height: 600px;
+}
+
+.react-pdf__Document {
+    position: relative;
+}
+
+.react-pdf__Document:hover .page-controls {
+    opacity: 1
+}
+
+.page-controls {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    background: white;
+    opacity: 0;
+    transform: translate(-50%);
+    transition: opacity ease-in-out .2s;
+    box-shadow: 0 30px 40px 0 rgba(16, 36, 94, .2);
+    border-radius: 4px;
+    z-index: 2;
+    font-size: 18px;
+}
+
+.page-controls span {
+    font: inherit;
+    font-size: .8em;
+    padding: 0 .5em
+}
+
+.page-controls button {
+    width: 44px;
+    height: 44px;
+    background: white;
+    border: 0;
+    font: inherit;
+    font-size: .8em;
+    border-radius: 4px;
+}
+
+.page-controls button:enabled:hover {
+    cursor: pointer
+}
+
+.page-controls button:enabled:hover {
+    background-color: #e6e6e6
+}
+
+.page-controls button:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
+}
+
+.page-controls button:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0
+}
