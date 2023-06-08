@@ -19,12 +19,15 @@ interface Props {
 }
 
 function highlightPattern(text: string, pattern: string) {
+  console.log('HIGHLIGHT', text);
   return text.replace(pattern, (value) => `<mark>${value}</mark>`);
 }
 
 export default function PDFElement({ element, page = 1, search = '' }: Props) {
   const className = `${element.display}-pdf`;
-  const url = element.url || `data:application/pdf;base64,${element.content}`;
+  const url =
+    element.url ||
+    `data:application/pdf;base64,${decodeURIComponent(element.content || '')}`;
 
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
@@ -34,10 +37,17 @@ export default function PDFElement({ element, page = 1, search = '' }: Props) {
   search = 'Ouyang et al';
 
   const onDocumentLoadSuccess: OnDocumentLoadSuccess =
-    function onDocumentLoadSuccess(pdf) {
+    async function onDocumentLoadSuccess(pdf) {
       setNumPages(pdf.numPages);
       setPageNumber(page);
       setPdf(pdf);
+      console.log('Loading all pages: START');
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const p = await pdf.getPage(i);
+        const textContent = await p.getTextContent();
+        console.log(i, textContent);
+      }
+      console.log('Loading all pages: END');
     };
 
   function changePage(offset: number) {
@@ -65,16 +75,7 @@ export default function PDFElement({ element, page = 1, search = '' }: Props) {
       if (!numPages || !pdf || !search) {
         return;
       }
-      console.log(
-        'searching',
-        search,
-        'in',
-        numPages,
-        'pages',
-        'starting at',
-        page,
-        '...'
-      );
+      //normalization: str.normalize("NFD").replace(/\p{Diacritic}/gu, "")
       // Start from page to allow users to specify both page and search
       for (let i = page; i <= numPages; i++) {
         const page = await pdf.getPage(i);
