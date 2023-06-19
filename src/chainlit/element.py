@@ -192,3 +192,36 @@ class Pyplot(Element):
         # Prevent the figure from being serialized
         del element["figure"]
         return element
+
+
+@dataclass
+class Table(Element):
+    """Useful to send a table to the UI."""
+
+    type: ElementType = "table"
+    content: Any = None
+    columns: Any = None
+    rows: Any = None
+
+    def __post_init__(self) -> None:
+        # Detect content type without importing external libraries
+        classname = type(self.content).__module__ + "." + type(self.content).__name__
+
+        if classname == "pandas.core.frame.DataFrame":
+            self.columns = ["id"] + self.content.columns.tolist()
+            self.rows = [
+                [idx] + list(row.values) for idx, row in self.content.iterrows()
+            ]
+
+        # elif type(self.content).__name__ == "ndarray":
+        #     # Input is a numpy ndarray
+        #     pass
+        else:
+            print("Unsupported input type", classname)
+
+        print(self.columns, self.rows)
+
+        # FIXME: this is a hack to prevent the empty content from breaking the class initialization
+        self.content = "_"
+
+        super().__post_init__()

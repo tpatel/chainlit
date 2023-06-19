@@ -1,12 +1,13 @@
 import { atom } from 'recoil';
 
-export type ElementType = 'image' | 'text' | 'pdf' | 'avatar';
+export type ElementType = 'image' | 'text' | 'pdf' | 'avatar' | 'table';
 
 export type AllElements =
   | IImageElement
   | ITextElement
   | IPdfElement
-  | IAvatarElement;
+  | IAvatarElement
+  | ITableElement;
 
 export interface IElement {
   id?: number;
@@ -38,6 +39,12 @@ export interface IPdfElement extends IElement {
   type: 'pdf';
   content?: string;
   url?: string;
+}
+
+export interface ITableElement extends IElement {
+  type: 'table';
+  rows: any[];
+  columns: any[];
 }
 
 export type IElements = IElement[];

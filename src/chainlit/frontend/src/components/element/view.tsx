@@ -6,11 +6,13 @@ import {
   IElement,
   IImageElement,
   IPdfElement,
+  ITableElement,
   ITextElement
 } from 'state/element';
 import TextElement from './text';
 import ImageElement from './image';
 import PDFElement from './pdf';
+import TableElement from './table';
 
 export const renderElement = (element: IElement): JSX.Element | null => {
   switch (element.type) {
@@ -20,6 +22,8 @@ export const renderElement = (element: IElement): JSX.Element | null => {
       return <TextElement element={element as ITextElement} />;
     case 'pdf':
       return <PDFElement element={element as IPdfElement} />;
+    case 'table':
+      return <TableElement element={element as ITableElement} />;
     default:
       return null;
   }

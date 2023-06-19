@@ -5,6 +5,7 @@ import InlinedTextList from 'components/element/inlined/texts';
 import { IAction } from 'state/action';
 import InlinedActionList from 'components/action/inlined';
 import InlinedPDFList from 'components/element/inlined/pdfs';
+import InlinedTableList from 'components/element/inlined/tables';
 
 interface Props {
   elements: IElements;
@@ -48,6 +49,9 @@ export default function InlinedElements({ elements, actions }: Props) {
       ) : null}
       {elementsByType.pdf?.length ? (
         <InlinedPDFList items={elementsByType.pdf} />
+      ) : null}
+      {elementsByType.table?.length ? (
+        <InlinedTableList items={elementsByType.table} />
       ) : null}
       {actions.length ? <InlinedActionList actions={actions} /> : null}
     </Stack>
